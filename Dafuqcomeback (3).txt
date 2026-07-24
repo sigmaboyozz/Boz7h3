@@ -2453,3 +2453,65 @@ Tab3:AddToggle({
 		end)
 	end
 })
+Tab13:AddLabel("0.002% mỗi giây nhận được Full Set Atom")
+
+getgenv().AutoAtomChance = false
+local GotLabel = nil
+
+Tab13:AddToggle({
+	Name = "Auto Random Atom🎁",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoAtomChance = Value
+
+		task.spawn(function()
+			while getgenv().AutoAtomChance do
+				task.wait(1)
+
+				if math.random(1,50000) == 1 then -- 0.002%
+
+					if not GotLabel then
+						GotLabel = Tab:AddLabel("🎉 You get Full Set Atom!")
+					end
+
+					OrionLib:MakeNotification({
+						Name = "Lucky!",
+						Content = "You get Full Set Atom!",
+						Time = 5
+					})
+				end
+			end
+		end)
+	end
+})
+Tab13:AddLabel("0.0002% mỗi giây nhận được helmet Ancinet")
+
+getgenv().AutoAtomChance = false
+local GotLabel = nil
+
+Tab13:AddToggle({
+	Name = "Auto Random Droid🎁",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoAtomChance = Value
+
+		task.spawn(function()
+			while getgenv().AutoAtomChance do
+				task.wait(1)
+
+				if math.random(1,500000) == 1 then -- 0.002%
+
+					if not GotLabel then
+						GotLabel = Tab:AddLabel("🎉 You get Full Set Atom!")
+					end
+
+					OrionLib:MakeNotification({
+						Name = "Lucky!",
+						Content = "Set Ancient helmet",
+						Time = 5
+					})
+				end
+			end
+		end)
+	end
+})
