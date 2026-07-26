@@ -1847,6 +1847,152 @@ local hrp = character:WaitForChild("HumanoidRootPart")
 
 -- Cập nhật character khi respawn
 player.CharacterAdded:Connect(function(newChar)
+	character = newChar
+	hrp = newChar:WaitForChild("HumanoidRootPart")
+end)
+
+local AutoGodmode = false
+local mainConnection
+
+local DISTANCE = 39 -- cách boss 39 studs trên mặt đất
+
+-- ==================== SLIDER KHOẢNG CÁCH ====================
+Tab7:AddSlider({
+	Name = "Khoảng cách với Boss",
+	Min = 10,
+	Max = 60,
+	Default = 39,
+	Increment = 1,
+	ValueName = "Studs",
+	Callback = function(Value)
+		DISTANCE = Value
+	end
+})
+
+Tab7:AddToggle({
+	Name = "Great Đroid",
+	Default = false,
+	Callback = function(Value)
+		AutoGodmode = Value
+
+		if Value then    
+			mainConnection = RunService.Heartbeat:Connect(function()    
+				if not AutoGodmode then return end    
+				if not hrp or not hrp.Parent then return end    
+					
+				local worldMobs = workspace:FindFirstChild("World Mobs")  
+				if not worldMobs then return end  
+				  
+				local eventMobs = worldMobs:FindFirstChild("Event Mobs")  
+				if not eventMobs then return end  
+				  
+				-- ==================== ƯU TIÊN CUSTOMMOB ====================  
+				local targetMob = nil  
+				  
+				local customMob = eventMobs:FindFirstChild("CustomMob")  
+				if customMob then  
+					local hum = customMob:FindFirstChild("Humanoid")  
+					local root = customMob:FindFirstChild("HumanoidRootPart")  
+					if root and hum and hum.Health > 0 then  
+						targetMob = customMob  
+					end  
+				end  
+				  
+				-- Nếu không có CustomMob thì tìm boss gần nhất  
+				if not targetMob then  
+					local closestDist = math.huge  
+					for _, mob in ipairs(eventMobs:GetChildren()) do    
+						local humanoid = mob:FindFirstChild("Humanoid")    
+						local root = mob:FindFirstChild("HumanoidRootPart")    
+						if root and humanoid and humanoid.Health > 0 then    
+							local dist = (hrp.Position - root.Position).Magnitude    
+							if dist < closestDist then    
+								closestDist = dist    
+								targetMob = mob    
+							end    
+						end    
+					end  
+				end  
+				  
+				if not targetMob or not targetMob:FindFirstChild("HumanoidRootPart") then    
+					return    
+				end    
+					
+				local bossHRP = targetMob.HumanoidRootPart    
+				
+				-- ===== VỊ TRÍ: CÁCH BOSS 39 STUDS TRÊN MẶT ĐẤT =====
+				local bossPos = bossHRP.Position
+				local playerPos = hrp.Position
+				
+				-- Vector ngang từ boss tới player (bỏ Y)
+				local direction = Vector3.new(playerPos.X - bossPos.X, 0, playerPos.Z - bossPos.Z)
+				
+				if direction.Magnitude < 0.1 then
+					-- Nếu đang đứng đúng trên đầu boss thì lấy hướng mặc định
+					direction = Vector3.new(1, 0, 0)
+				end
+				
+				direction = direction.Unit
+				
+				-- Vị trí mới: cách boss DISTANCE studs, cùng độ cao với boss (mặt đất)
+				local targetPos = Vector3.new(
+					bossPos.X + direction.X * DISTANCE,
+					bossPos.Y,          -- giữ nguyên độ cao của boss (mặt đất)
+					bossPos.Z + direction.Z * DISTANCE
+				)
+					
+				-- Fix rơi + giật mạnh    
+				hrp.Velocity = Vector3.new(0, 0, 0)    
+				hrp.AssemblyLinearVelocity = Vector3.new(0, 0, 0)    
+				hrp.AssemblyAngularVelocity = Vector3.new(0, 0, 0)    
+					
+				-- Tween mượt    
+				local tweenInfo = TweenInfo.new(0.22, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)    
+				local tween = TweenService:Create(hrp, tweenInfo, {    
+					CFrame = CFrame.new(targetPos, bossHRP.Position)    
+				})    
+				tween:Play()    
+					
+				-- Auto Skill chỉ khi gần    
+				local distToBoss = (hrp.Position - bossHRP.Position).Magnitude  
+				if distToBoss <= 50 then    
+					local args = {    
+						"Weapons_20_3",    
+						{    
+							TargetPos = Vector3.new(-409.91522216796875, 1356.2965087890625, 95.83793640136719)    
+						},    
+						18    
+					}    
+					pcall(function()    
+						game:GetService("ReplicatedStorage")    
+							:WaitForChild("Packages")    
+							:WaitForChild("_Index")    
+							:WaitForChild("sleitnick_knit@1.4.7")    
+							:WaitForChild("knit")    
+							:WaitForChild("Services")    
+							:WaitForChild("SkillManagerV2")    
+							:WaitForChild("RE")    
+							:WaitForChild("ExecuteSkill"):FireServer(unpack(args))    
+					end)    
+				end    
+			end)    
+		else    
+			if mainConnection then    
+				mainConnection:Disconnect()    
+				mainConnection = nil    
+			end    
+		end    
+	end
+})
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+-- Cập nhật character khi respawn
+player.CharacterAdded:Connect(function(newChar)
     character = newChar
     hrp = newChar:WaitForChild("HumanoidRootPart")
 end)
