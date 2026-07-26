@@ -2661,3 +2661,68 @@ Tab13:AddToggle({
 		end)
 	end
 })
+getgenv().AutoRangeAtom = false
+
+Tab7:AddToggle({
+    Name = "Auto Range Atom",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoRangeAtom = Value
+
+        task.spawn(function()
+            while getgenv().AutoRangeAtom do
+                local atom = workspace:FindFirstChild("World Mobs")
+                    and workspace["World Mobs"]:FindFirstChild("Event Mobs")
+                    and workspace["World Mobs"]["Event Mobs"]:FindFirstChild("Atom Max")
+
+                if atom then
+                    local hitbox = atom:FindFirstChild("Hitbox")
+                        or atom:FindFirstChild("HumanoidRootPart")
+                        or atom.PrimaryPart
+
+                    if hitbox and hitbox:IsA("BasePart") then
+                        hitbox.Size = Vector3.new(700, 700, 700)
+                        hitbox.CanCollide = false
+                        hitbox.Massless = true
+                    end
+                end
+
+                task.wait(0.2)
+            end
+        end)
+    end
+})
+getgenv().AutoLockAtom = false
+
+Tab7:AddToggle({
+    Name = "Auto Lock Atom",
+    Default = false,
+    Callback = function(Value)
+        getgenv().AutoLockAtom = Value
+
+        task.spawn(function()
+            while getgenv().AutoLockAtom do
+                pcall(function()
+                    local atom = workspace:FindFirstChild("World Mobs")
+                        and workspace["World Mobs"]:FindFirstChild("Event Mobs")
+                        and workspace["World Mobs"]["Event Mobs"]:FindFirstChild("Atom Max")
+
+                    if atom then
+                        game:GetService("ReplicatedStorage")
+                            :WaitForChild("Packages")
+                            :WaitForChild("_Index")
+                            :WaitForChild("sleitnick_knit@1.4.7")
+                            :WaitForChild("knit")
+                            :WaitForChild("Services")
+                            :WaitForChild("SkillManager")
+                            :WaitForChild("RE")
+                            :WaitForChild("LockedOnChanged")
+                            :FireServer(atom)
+                    end
+                end)
+
+                task.wait(0.2)
+            end
+        end)
+    end
+})
