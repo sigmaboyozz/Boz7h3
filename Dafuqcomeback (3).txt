@@ -2016,7 +2016,7 @@ Tab:AddSlider({
 })
 
 Tab7:AddToggle({
-    Name = "Great Đroid",
+    Name = "Con tom",
     Default = false,
     Callback = function(Value)
         AutoGodmode = Value
