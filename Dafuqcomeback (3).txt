@@ -2929,3 +2929,217 @@ Tab8:AddToggle({
 		end
 	end
 })
+local Players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+
+local LP = Players.LocalPlayer
+
+local SkillSupportOrb = false
+local SkillGui
+
+Tab16:AddToggle({
+	Name = "Skills support Orb organ",
+	Default = false,
+	Callback = function(Value)
+		SkillSupportOrb = Value
+
+		if not Value then
+			if SkillGui then
+				SkillGui:Destroy()
+				SkillGui = nil
+			end
+			return
+		end
+
+		if SkillGui then
+			SkillGui:Destroy()
+		end
+
+		local gui = Instance.new("ScreenGui")
+		gui.Name = "SkillButtonGui"
+		gui.ResetOnSpawn = false
+		gui.Parent = LP:WaitForChild("PlayerGui")
+		SkillGui = gui
+
+		local button = Instance.new("ImageButton")
+		button.Name = "SkillButton"
+		button.Parent = gui
+		button.BackgroundTransparency = 1
+		button.AnchorPoint = Vector2.new(0.5, 0.5)
+		button.Position = UDim2.new(1, -169, 1, -139)
+		button.Size = UDim2.new(0, 42, 0, 42)
+		button.Image = "rbxassetid://9775839370"
+
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(1, 0)
+		corner.Parent = button
+
+		local label = Instance.new("TextLabel")
+		label.Parent = button
+		label.Size = UDim2.new(1, 0, 1, 0)
+		label.BackgroundTransparency = 1
+		label.Text = ""
+		label.TextScaled = true
+		label.Font = Enum.Font.GothamBold
+		label.TextColor3 = Color3.new(1, 1, 1)
+		label.TextStrokeTransparency = 0
+
+		local counting = false
+
+		local function GetCooldown()
+			local cd = 0
+			pcall(function()
+				local skill = workspace.Characters[LP.Name].Status.SkillAction["113"]
+				if skill then
+					cd = skill:GetAttribute("CooldownDuration")
+						or (skill:FindFirstChild("CooldownDuration") and skill.CooldownDuration.Value)
+						or 25
+				end
+			end)
+			return math.floor(cd)
+		end
+
+		local function StartCooldown()
+			if counting then return end
+			counting = true
+
+			local cd = GetCooldown()
+
+			for i = cd, 0, -1 do
+				if not SkillSupportOrb then break end
+				label.Text = tostring(i)
+				task.wait(1)
+			end
+
+			label.Text = ""
+			counting = false
+		end
+
+		local function FireSkill(began)
+			local cam = workspace.CurrentCamera
+			local char = workspace.Characters:FindFirstChild(LP.Name)
+			local root = char and char:FindFirstChild("HumanoidRootPart")
+			if not root then return end
+
+			RS.Remotes.SkillRemote:FireServer({
+				Camera = cam.CFrame,
+				SkillId = "113",
+				Began = began,
+				CFrame = root.CFrame,
+				["Typе"] = 1,
+				Aim = root.CFrame.Position + root.CFrame.LookVector * 50
+			})
+		end
+
+		button.MouseButton1Down:Connect(function()
+			FireSkill(true)
+			task.spawn(StartCooldown)
+		end)
+
+		button.MouseButton1Up:Connect(function()
+			FireSkill(false)
+		end)
+
+		button.MouseLeave:Connect(function()
+			FireSkill(false)
+		end)
+	end
+})
+local Players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+
+local LP = Players.LocalPlayer
+
+local SkillGui
+local SkillSupport = false
+
+Tab16:AddToggle({
+	Name = "Skills support 123",
+	Default = false,
+	Callback = function(Value)
+		SkillSupport = Value
+
+		if not Value then
+			if SkillGui then
+				SkillGui:Destroy()
+				SkillGui = nil
+			end
+			return
+		end
+
+		if SkillGui then
+			SkillGui:Destroy()
+		end
+
+		local gui = Instance.new("ScreenGui")
+		gui.Name = "SkillButtonGui"
+		gui.ResetOnSpawn = false
+		gui.Parent = LP:WaitForChild("PlayerGui")
+		SkillGui = gui
+
+		local button = Instance.new("ImageButton")
+		button.Name = "SkillButton"
+		button.Parent = gui
+		button.BackgroundTransparency = 1
+		button.AnchorPoint = Vector2.new(0.5, 0.5)
+		button.Position = UDim2.new(1, -190, 1, -87)
+		button.Size = UDim2.new(0, 42, 0, 42)
+		button.Image = "rbxassetid://13472637937"
+
+		local corner = Instance.new("UICorner")
+		corner.CornerRadius = UDim.new(1, 0)
+		corner.Parent = button
+
+		local label = Instance.new("TextLabel")
+		label.Parent = button
+		label.Size = UDim2.new(1, 0, 1, 0)
+		label.BackgroundTransparency = 1
+		label.Text = ""
+		label.TextScaled = true
+		label.Font = Enum.Font.GothamBold
+		label.TextColor3 = Color3.new(1,1,1)
+		label.TextStrokeTransparency = 0
+
+		local counting = false
+
+		local function StartCooldown()
+			if counting then return end
+			counting = true
+
+			local char = workspace.Characters:WaitForChild(LP.Name)
+			local skill = char.Status.SkillAction:WaitForChild("Weapons_3_1")
+
+			local cd = skill:GetAttribute("CooldownDuration")
+				or (skill:FindFirstChild("CooldownDuration") and skill.CooldownDuration.Value)
+				or 0
+
+			for i = math.floor(cd), 0, -1 do
+				if not SkillSupport then break end
+				label.Text = tostring(i)
+				task.wait(1)
+			end
+
+			label.Text = ""
+			counting = false
+		end
+
+		button.MouseButton1Click:Connect(function()
+			RS.Remotes.SkillRemote:FireServer({
+				Camera = CFrame.new(
+					74.2727279663086,251.0009002685547,-28.747745513916016,
+					-0.9511321783065796,-0.044049736112356186,0.3056260347366333,
+					0,0.9897724390029907,0.14265543222427368,
+					-0.308784157037735,0.13568417727947235,-0.9414043426513672
+				),
+				SkillId = "123",
+				Began = true,
+				CFrame = CFrame.new(70.45240020751953,247.81771850585938,-16.98019027709961),
+				["Typе"] = 1,
+				Aim = Vector3.new(70.45240020751953,247.81771850585938,-66.98019409179688)
+			})
+
+			task.wait(0.1)
+			task.spawn(StartCooldown)
+		end)
+	end
+})
