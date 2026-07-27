@@ -2726,3 +2726,103 @@ Tab7:AddToggle({
         end)
     end
 })
+local reportText = "" -- Lưu nội dung textbox
+
+Tab19:AddTextbox({
+    Name = "Nội dung report",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        reportText = Value
+    end
+})
+
+Tab19:AddButton({
+    Name = "Send report",
+    Callback = function()
+        if reportText == "" or reportText == nil then
+            OrionLib:MakeNotification({
+                Name = "Lỗi",
+                Content = "Vui lòng nhập nội dung trước khi gửi!",
+                Image = "rbxassetid://4483345998",
+                Time = 4
+            })
+            return
+        end
+
+        local player = game:GetService("Players").LocalPlayer
+        local playerName = player.Name
+        local displayName = player.DisplayName
+
+        local message = string.format(
+            "**Report mới**\n**Tên:** %s (%s)\n**UserId:** %s\n**Nội dung:**\n```%s```",
+            playerName,
+            displayName,
+            tostring(player.UserId),
+            reportText
+        )
+
+        local webhook = "https://discord.com/api/webhooks/1531274959635349566/LDhD-tniLOWPd4pGmN4jvw0xG2kbsrDPVI7Lprb4Y_lkmco-Q32wXuaKM8OYAAFx7mF5"
+
+        local data = {
+            content = message
+        }
+
+        local HttpService = game:GetService("HttpService")
+        local jsonData = HttpService:JSONEncode(data)
+
+        local success, err = pcall(function()
+            -- Hỗ trợ hầu hết executor (Synapse, Script-Ware, Fluxus, Wave...)
+            if request then
+                request({
+                    Url = webhook,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = jsonData
+                })
+            elseif syn and syn.request then
+                syn.request({
+                    Url = webhook,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = jsonData
+                })
+            elseif http_request then
+                http_request({
+                    Url = webhook,
+                    Method = "POST",
+                    Headers = {
+                        ["Content-Type"] = "application/json"
+                    },
+                    Body = jsonData
+                })
+            else
+                -- Fallback (có thể bị block bởi Discord)
+                HttpService:PostAsync(webhook, jsonData)
+            end
+        end)
+
+        if success then
+            OrionLib:MakeNotification({
+                Name = "Thành công",
+                Content = "Đã gửi report thành công!",
+                Image = "rbxassetid://4483345998",
+                Time = 4
+            })
+            reportText = "" -- Xóa sau khi gửi
+        else
+            OrionLib:MakeNotification({
+                Name = "Lỗi",
+                Content = "Gửi thất bại: " .. tostring(err),
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
+
+OrionLib:Init()
