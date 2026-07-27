@@ -2826,3 +2826,106 @@ Tab19:AddButton({
 })
 
 OrionLib:Init()
+getgenv().AutoSearchBooth = false
+
+Tab8:AddToggle({
+	Name = "Auto Search Booth good",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoSearchBooth = Value
+
+		if Value then
+			task.spawn(function()
+				local Players = game:GetService("Players")
+				local Booths = workspace:WaitForChild("Misc"):WaitForChild("Booths")
+
+				while getgenv().AutoSearchBooth do
+					-- Tạm dừng nếu dưới 20 người
+					while getgenv().AutoSearchBooth and #Players:GetPlayers() < 20 do
+						task.wait(2)
+					end
+
+					for i = 1, 16 do
+						if not getgenv().AutoSearchBooth then
+							break
+						end
+
+						local booth = Booths:FindFirstChild("Booth" .. i)
+						if booth then
+							local remote = booth:FindFirstChild("TradeBooth")
+								and booth.TradeBooth:FindFirstChild("RE")
+								and booth.TradeBooth.RE:FindFirstChild("Claim")
+
+							if remote then
+								pcall(function()
+									remote:FireServer(true)
+								end)
+							end
+						end
+					end
+
+					task.wait(0.2)
+				end
+			end)
+		end
+	end
+})
+getgenv().AutoPleaseBuy = false
+
+Tab8:AddToggle({
+	Name = "Auto please buy",
+	Default = false,
+	Callback = function(Value)
+		getgenv().AutoPleaseBuy = Value
+
+		if Value then
+			task.spawn(function()
+				local RS = game:GetService("ReplicatedStorage")
+				local ExecuteSkill = RS:WaitForChild("Packages")
+					:WaitForChild("_Index")
+					:WaitForChild("sleitnick_knit@1.4.7")
+					:WaitForChild("knit")
+					:WaitForChild("Services")
+					:WaitForChild("SkillManagerV2")
+					:WaitForChild("RE")
+					:WaitForChild("ExecuteSkill")
+
+				local messages = {
+					"huhu buy please",
+					"😭😭😭",
+					"I haven't eaten anything yet, please."
+				}
+
+				while getgenv().AutoPleaseBuy do
+					for _, msg in ipairs(messages) do
+						if not getgenv().AutoPleaseBuy then
+							break
+						end
+
+						pcall(function()
+							ExecuteSkill:FireServer(
+								"Weapons_21_1",
+								{
+									InputText = msg,
+									TargetPos = Vector3.new(
+										127.73929595947266,
+										807.0628662109375,
+										-136.1484832763672
+									)
+								},
+								1
+							)
+						end)
+
+						for i = 1, 100 do
+							if not getgenv().AutoPleaseBuy then
+								break
+							end
+							task.wait(0.1)
+						end
+					end
+				end
+			end)
+		end
+	end
+})
