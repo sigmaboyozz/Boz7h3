@@ -3245,3 +3245,153 @@ Tab4:AddToggle({
 		end
 	end
 })
+local Players = game:GetService("Players")
+local RS = game:GetService("ReplicatedStorage")
+local LP = Players.LocalPlayer
+
+local LockRemote = RS.Packages._Index["sleitnick_knit@1.4.7"].knit.Services.SkillManager.RE.LockedOnChanged
+local SkillRemote = RS.Remotes.SkillRemote
+
+-- Settings
+local Settings = {
+    Enabled = false,
+    Range = 100,
+    TargetMobs = true,       -- workspace["World Mobs"].Mobs
+    TargetBoss = true,       -- workspace["World Mobs"]["Boss Mobs"]
+    TargetEventBoss = true   -- workspace["World Mobs"]["Event Mobs"]
+}
+
+local function GetRoot(model)
+    return model:FindFirstChild("HumanoidRootPart")
+        or model:FindFirstChild("PrimaryPart")
+        or model:FindFirstChild("Torso")
+end
+
+local function GetNearestMob()
+    local character = LP.Character
+    if not character then return nil end
+
+    local hrp = character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return nil end
+
+    local nearest
+    local dist = Settings.Range
+
+    local folders = {}
+
+    -- Mobs
+    if Settings.TargetMobs then
+        local folder = workspace["World Mobs"]:FindFirstChild("Mobs")
+        if folder then table.insert(folders, folder) end
+    end
+
+    -- Boss
+    if Settings.TargetBoss then
+        local folder = workspace["World Mobs"]:FindFirstChild("Boss Mobs")
+        if folder then table.insert(folders, folder) end
+    end
+
+    -- Boss Event
+    if Settings.TargetEventBoss then
+        local folder = workspace["World Mobs"]:FindFirstChild("Event Mobs")
+        if folder then table.insert(folders, folder) end
+    end
+
+    for _, folder in ipairs(folders) do
+        for _, mob in ipairs(folder:GetChildren()) do
+            local root = GetRoot(mob)
+            local hum = mob:FindFirstChildWhichIsA("Humanoid")
+
+            if root and hum and hum.Health > 0 then
+                local d = (root.Position - hrp.Position).Magnitude
+                if d < dist then
+                    dist = d
+                    nearest = mob
+                end
+            end
+        end
+    end
+
+    return nearest
+end
+
+-- Main loop
+task.spawn(function()
+    while task.wait(0.1) do
+        if Settings.Enabled then
+            local mob = GetNearestMob()
+            if mob then
+                pcall(function()
+                    LockRemote:FireServer(mob)
+                end)
+
+                pcall(function()
+                    SkillRemote:FireServer({
+                        Camera = workspace.CurrentCamera.CFrame,
+                        SkillId = "101",
+                        Began = true,
+                        CFrame = LP.Character.HumanoidRootPart.CFrame,
+                        ["Typ\208\181"] = 1,
+                        Aim = vector.create(
+                            mob:GetPivot().Position.X,
+                            mob:GetPivot().Position.Y,
+                            mob:GetPivot().Position.Z
+                        )
+                    })
+                end)
+            end
+        end
+    end
+end)
+
+-- UI
+Tab3:AddToggle({
+    Name = "Enemy Blast Aura Kill",
+    Default = false,
+    Callback = function(Value)
+        Settings.Enabled = Value
+    end
+})
+
+Tab3:AddSlider({
+    Name = "Range",
+    Min = 10,
+    Max = 1000,
+    Default = 100,
+    Color = Color3.fromRGB(255, 255, 255),
+    Increment = 10,
+    ValueName = "studs",
+    Callback = function(Value)
+        Settings.Range = Value
+    end
+})
+
+Tab3:AddSection({
+    Name = "Target Filters"
+})
+
+Tab3:AddToggle({
+    Name = "Mobs",
+    Default = true,
+    Callback = function(Value)
+        Settings.TargetMobs = Value
+    end
+})
+
+Tab3:AddToggle({
+    Name = "Boss",
+    Default = true,
+    Callback = function(Value)
+        Settings.TargetBoss = Value
+    end
+})
+
+Tab3:AddToggle({
+    Name = "Zaja + meta",
+    Default = true,
+    Callback = function(Value)
+        Settings.TargetEventBoss = Value
+    end
+})
+
+OrionLib:Init()
