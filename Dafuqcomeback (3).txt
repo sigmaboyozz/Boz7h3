@@ -3526,3 +3526,20 @@ Tab14:AddToggle({
 		end)
 	end
 })
+Tab14:AddSection({
+    Name = "Flex 🔒"
+})
+Tab14:AddButton({
+	Name = "Inf power For rec video",
+	Callback = function()
+		local Players = game:GetService("Players")
+		local LocalPlayer = Players.LocalPlayer
+
+		local damage = workspace:WaitForChild("Characters")
+			:WaitForChild(LocalPlayer.Name)
+			:WaitForChild("Status")
+			:WaitForChild("Damage")
+
+		damage.Value = math.huge
+	end
+})
