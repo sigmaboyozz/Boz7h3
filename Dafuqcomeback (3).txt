@@ -944,12 +944,12 @@ Tab5:AddToggle({
         })
     end
 })
-local AntiIdle = false
+local AntiIdle = true
 local AntiIdleConn
 
 Tab6:AddToggle({
     Name = "Auto Anti Idle [Anti kick 20 Mins]",
-    Default = false,
+    Default = true,
     Callback = function(Value)
         AntiIdle = Value
 
@@ -3395,3 +3395,69 @@ Tab3:AddToggle({
 })
 
 OrionLib:Init()
+local AutoSkill101 = false
+
+Tab6:AddToggle({
+	Name = "Auto Skill 101 + LockOn",
+	Default = false,
+	Callback = function(Value)
+		AutoSkill101 = Value
+
+		if Value then
+			task.spawn(function()
+				local Players = game:GetService("Players")
+				local RS = game:GetService("ReplicatedStorage")
+				local LP = Players.LocalPlayer
+
+				local LockRemote = RS:WaitForChild("Packages")
+					:WaitForChild("_Index")
+					:WaitForChild("sleitnick_knit@1.4.7")
+					:WaitForChild("knit")
+					:WaitForChild("Services")
+					:WaitForChild("SkillManager")
+					:WaitForChild("RE")
+					:WaitForChild("LockedOnChanged")
+
+				local SkillRemote = RS:WaitForChild("Remotes")
+					:WaitForChild("SkillRemote")
+
+				while AutoSkill101 do
+					local Character = LP.Character
+
+					if Character then
+						LockRemote:FireServer(Character)
+
+						local args = {
+							{
+								Camera = CFrame.new(
+									74.2727279663086, 251.0009002685547, -28.747745513916016,
+									-0.9511321783065796, -0.044049736112356186, 0.3056260347366333,
+									0, 0.9897724390029907, 0.14265543222427368,
+									-0.308784157037735, 0.13568417727947235, -0.9414043426513672
+								),
+								SkillId = "101",
+								Began = true,
+								CFrame = CFrame.new(
+									70.45240020751953, 247.81771850585938, -16.98019027709961,
+									1,0,0,
+									0,1,0,
+									0,0,1
+								),
+								["Typ\208\181"] = 1,
+								Aim = vector.create(
+									70.45240020751953,
+									247.81771850585938,
+									-66.98019409179688
+								)
+							}
+						}
+
+						SkillRemote:FireServer(unpack(args))
+					end
+
+					task.wait(0.1)
+				end
+			end)
+		end
+	end
+})
