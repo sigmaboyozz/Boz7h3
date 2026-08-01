@@ -3461,3 +3461,33 @@ Tab6:AddToggle({
 		end
 	end
 })
+local AntiLogsStaff = true
+
+Tab6:AddToggle({
+	Name = "Anti Logs staff check",
+	Default = true,
+	Callback = function(Value)
+		AntiLogsStaff = Value
+	end
+})
+
+task.spawn(function()
+	while task.wait(0.85) do
+		if AntiLogsStaff then
+			local args = {
+				[1] = true
+			}
+
+			game:GetService("ReplicatedStorage")
+				:WaitForChild("Packages")
+				:WaitForChild("_Index")
+				:WaitForChild("sleitnick_knit@1.4.7")
+				:WaitForChild("knit")
+				:WaitForChild("Services")
+				:WaitForChild("FlightService")
+				:WaitForChild("RE")
+				:WaitForChild("Flight")
+				:FireServer(unpack(args))
+		end
+	end
+end)
