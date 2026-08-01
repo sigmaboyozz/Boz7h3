@@ -1870,7 +1870,7 @@ Tab7:AddSlider({
 })
 
 Tab7:AddToggle({
-	Name = "Great Đroid",
+	Name = "Unstable Atom [New]",
 	Default = false,
 	Callback = function(Value)
 		AutoGodmode = Value
@@ -2016,7 +2016,7 @@ Tab:AddSlider({
 })
 
 Tab7:AddToggle({
-    Name = "Con tom",
+    Name = "Great droid ",
     Default = false,
     Callback = function(Value)
         AutoGodmode = Value
@@ -3541,5 +3541,46 @@ Tab14:AddButton({
 			:WaitForChild("Damage")
 
 		damage.Value = math.huge
+	end
+})
+local AutoBeast = false
+
+Tab6:AddToggle({
+	Name = "Auto Beast",
+	Default = false,
+	Callback = function(Value)
+		AutoBeast = Value
+
+		task.spawn(function()
+			while AutoBeast do
+				local args = {
+					[1] = {
+						["Camera"] = CFrame.new(
+							1342.056884765625, 599.060546875, -2938.125244140625,
+							-0.8075301647186279, 0.04853636771440506, -0.5878260731697083,
+							-1.862645149230957e-09, 0.9966084957122803, 0.08228923380374908,
+							0.5898265242576599, 0.06645102798938751, -0.8047914505004883
+						),
+						["SkillId"] = "8",
+						["Began"] = true,
+						["CFrame"] = CFrame.new(
+							1351.19775390625, 595.374755859375, -2932.05810546875,
+							-0.9335607290267944, -3.380608148972897e-08, -0.3584192395210266,
+							-6.43111164322363e-08, 1, 7.3188736848806e-08,
+							0.3584192395210266, 9.137647083434786e-08, -0.9335607290267944
+						),
+						["Typе"] = 1,
+						["Aim"] = Vector3.new(1414.102294921875, 588.9749145507812, -2839.48779296875)
+					}
+				}
+
+				game:GetService("ReplicatedStorage")
+					:WaitForChild("Remotes")
+					:WaitForChild("SkillRemote")
+					:FireServer(unpack(args))
+
+				task.wait(0.1)
+			end
+		end)
 	end
 })
