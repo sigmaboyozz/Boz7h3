@@ -53,7 +53,7 @@ local Tab8 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab9 = Window:MakeTab({
-    Name = "Marco+Antiban",
+    Name = "Marco🚿",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -78,7 +78,7 @@ local Tab13 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab14 = Window:MakeTab({
-    Name = "Menu color",
+    Name = "Dodge Logs + band🔨",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -3463,7 +3463,7 @@ Tab6:AddToggle({
 })
 local AntiLogsStaff = true
 
-Tab6:AddToggle({
+Tab14:AddToggle({
 	Name = "Anti Logs staff check",
 	Default = true,
 	Callback = function(Value)
@@ -3491,3 +3491,38 @@ task.spawn(function()
 		end
 	end
 end)
+
+local AutoObfusca = false
+
+Tab14:AddToggle({
+	Name = "Auto Obfusca DisplayName (Client side)",
+	Default = false,
+	Callback = function(Value)
+		AutoObfusca = Value
+
+		task.spawn(function()
+			local chars = {
+				"#","&","@","₫","$","€","%","!","?","*","+","-","=",
+				"^","~","/","\\","|","<",">","_"
+			}
+
+			while AutoObfusca do
+				local Character = game.Players.LocalPlayer.Character
+				local Humanoid = Character and Character:FindFirstChild("Humanoid")
+
+				if Humanoid then
+					local text = ""
+					local len = math.random(8,16)
+
+					for i = 1, len do
+						text = text .. chars[math.random(#chars)]
+					end
+
+					Humanoid.DisplayName = text
+				end
+
+				task.wait(0.8)
+			end
+		end)
+	end
+})
