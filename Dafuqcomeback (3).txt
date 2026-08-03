@@ -83,7 +83,7 @@ local Tab14 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab15 = Window:MakeTab({
-    Name = "Discord+Youtube",
+    Name = "How to Setup",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -113,7 +113,7 @@ local Tab20 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab21 = Window:MakeTab({
-    Name = "global Chat🌍",
+    Name = "troll👽",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -3398,7 +3398,7 @@ OrionLib:Init()
 local AutoSkill101 = false
 
 Tab6:AddToggle({
-	Name = "Auto Skill 101 + LockOn",
+	Name = "Enenry blast orbit🌀",
 	Default = false,
 	Callback = function(Value)
 		AutoSkill101 = Value
@@ -3580,6 +3580,34 @@ Tab6:AddToggle({
 					:FireServer(unpack(args))
 
 				task.wait(0.1)
+			end
+		end)
+	end
+})
+local AutoClaimDaily = false
+
+Tab6:AddToggle({
+	Name = "Auto Claim daily",
+	Default = true,
+	Callback = function(Value)
+		AutoClaimDaily = Value
+
+		task.spawn(function()
+			while AutoClaimDaily do
+				pcall(function()
+					game:GetService("ReplicatedStorage")
+						:WaitForChild("Packages")
+						:WaitForChild("_Index")
+						:WaitForChild("sleitnick_knit@1.4.7")
+						:WaitForChild("knit")
+						:WaitForChild("Services")
+						:WaitForChild("LoginRewardsService")
+						:WaitForChild("RF")
+						:WaitForChild("ClaimDay")
+						:InvokeServer()
+				end)
+
+				task.wait(5)
 			end
 		end)
 	end
