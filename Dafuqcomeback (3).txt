@@ -2327,6 +2327,7 @@ Tab7:AddToggle({
 				"Garriot",
 				"Great Droid",
 				"Atom Max"
+                "Mecha Soldier"
 			}
 
 			while getgenv().AutoStart do
@@ -2381,150 +2382,7 @@ Tab7:AddToggle({
 		end)
 	end
 })
-getgenv().AutoSkibidi = false
 
-Tab3:AddToggle({
-	Name = "Auto Skibidi",
-	Default = false,
-	Callback = function(Value)
-		getgenv().AutoSkibidi = Value
-
-		if not Value then
-			if currentTween then
-				currentTween:Cancel()
-			end
-			return
-		end
-
-		task.spawn(function()
-			local Players = game:GetService("Players")
-			local TweenService = game:GetService("TweenService")
-			local RS = game:GetService("ReplicatedStorage")
-			local LP = Players.LocalPlayer
-
-			local Strength = LP.Stats.Strength
-			local Rebirth = LP.Stats.Rebirth
-			local MobFolder = workspace["World Mobs"].Mobs
-
-			local WAIT_POS = CFrame.new(
-				6489.69238,
-				602.375183,
-				-2983.48608
-			)
-
-			local SPEED = 200
-			local currentTween
-
-			local function TweenTo(cf)
-				if currentTween then
-					currentTween:Cancel()
-				end
-
-				local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
-				if not hrp then return end
-
-				local dist = (hrp.Position - cf.Position).Magnitude
-
-				currentTween = TweenService:Create(
-					hrp,
-					TweenInfo.new(dist / SPEED, Enum.EasingStyle.Linear),
-					{CFrame = cf}
-				)
-
-				currentTween:Play()
-			end
-
-			local function Alive(model)
-				local hum = model:FindFirstChildOfClass("Humanoid")
-				return hum and hum.Health > 0
-			end
-
-			local function FindBandit()
-				for _,v in ipairs(MobFolder:GetChildren()) do
-					if v.Name == "Bandit" and Alive(v) then
-						return v
-					end
-				end
-			end
-
-			local function FindBrawly()
-				for _,v in ipairs(MobFolder:GetChildren()) do
-					if string.find(string.lower(v.Name),"braw") and Alive(v) then
-						return v
-					end
-				end
-			end
-
-			task.spawn(function()
-				while getgenv().AutoSkibidi do
-					task.wait()
-
-					local args = {{
-						Camera = CFrame.new(74.2727279663086,251.0009002685547,-28.747745513916016,-0.9511321783065796,-0.044049736112356186,0.3056260347366333,0,0.9897724390029907,0.14265543222427368,-0.308784157037735,0.13568417727947235,-0.9414043426513672),
-						SkillId = "1",
-						Began = true,
-						CFrame = CFrame.new(70.45240020751953,247.81771850585938,-16.98019027709961),
-						["Typе"] = 1,
-						Aim = Vector3.new(70.45240020751953,247.81771850585938,-66.98019409179688)
-					}}
-
-					RS.Remotes.SkillRemote:FireServer(unpack(args))
-				end
-			end)
-
-			task.spawn(function()
-				local remote = workspace["World Map"]["New Lobby"]
-					.Teleporters
-					.CrimsonPlanet_TPPad
-					.WorldTeleporterPad
-					.RE
-					.ActivateWorldTeleporter
-
-				while getgenv().AutoSkibidi do
-					task.wait()
-
-					if Rebirth.Value >= 50 and Rebirth.Value < 60 then
-						remote:FireServer()
-					end
-				end
-			end)
-
-			while getgenv().AutoSkibidi do
-				task.wait(0.2)
-
-				local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
-
-				if hrp then
-					if Strength.Value >= 100000 then
-						local mob = FindBrawly()
-
-						if mob then
-							local root = mob:FindFirstChild("HumanoidRootPart") or mob.PrimaryPart
-							if root then
-								TweenTo(root.CFrame)
-							end
-						else
-							TweenTo(WAIT_POS)
-						end
-					else
-						local mob = FindBandit()
-
-						if mob then
-							local root = mob:FindFirstChild("HumanoidRootPart") or mob.PrimaryPart
-							if root then
-								TweenTo(root.CFrame)
-							end
-						end
-					end
-				end
-			end
-
-			if currentTween then
-				currentTween:Cancel()
-			end
-		end)
-	end
-})
 Tab13:AddLabel("0.002% mỗi giây nhận được Full Set Atom")
 
 getgenv().AutoAtomChance = false
@@ -2980,7 +2838,7 @@ local SkillGui
 local SkillSupport = false
 
 Tab16:AddToggle({
-	Name = "Skills support 123",
+	Name = "Skills support Scythe",
 	Default = false,
 	Callback = function(Value)
 		SkillSupport = Value
@@ -3537,4 +3395,99 @@ Tab6:AddToggle({
 			end
 		end)
 	end
+})
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local AutoNextArea = false
+
+Tab7:AddToggle({
+    Name = "Auto Next Area",
+    Default = false,
+    Callback = function(Value)
+        AutoNextArea = Value
+
+        if not Value then
+            return
+        end
+
+        task.spawn(function()
+            while AutoNextArea do
+                task.wait(0.1)
+
+                -- CHECK SERVER PLAYER
+                if #Players:GetPlayers() >= 2 then
+                    TeleportService:Teleport(game.PlaceId, LocalPlayer)
+                    break
+                end
+
+                -- CHECK DUNGEON
+                local Dungeon = Workspace:FindFirstChild("Dungeon")
+                local Stages = Dungeon and Dungeon:FindFirstChild("Stages")
+                local Stage0 = Stages and Stages:FindFirstChild("0")
+                local NextArea = Stage0 and Stage0:FindFirstChild("NextArea")
+                local Container = NextArea and NextArea:FindFirstChild("Container")
+                local Visual = Container and Container:FindFirstChild("Visual")
+
+                if not Visual then
+                    continue
+                end
+
+                -- CHECK ATOM MAX
+                local WorldMobs = Workspace:FindFirstChild("World Mobs")
+                local EventMobs = WorldMobs and WorldMobs:FindFirstChild("Event Mobs")
+                local AtomMax = EventMobs and EventMobs:FindFirstChild("Atom Max")
+
+                if AtomMax then
+                    continue
+                end
+
+                -- TELEPORT
+                local Character = LocalPlayer.Character
+                local HRP = Character and Character:FindFirstChild("HumanoidRootPart")
+
+                if HRP and Visual:IsA("BasePart") then
+                    HRP.CFrame = Visual.CFrame + Vector3.new(0, 3, 0)
+
+                    task.wait(0.8)
+
+                    -- Nếu tắt trong lúc chờ thì dừng luôn
+                    if not AutoNextArea then
+                        break
+                    end
+
+                    -- CHECK PLAYER
+                    if #Players:GetPlayers() >= 2 then
+                        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+                        break
+                    end
+
+                    -- Visual còn tồn tại không?
+                    if not Visual.Parent then
+                        continue
+                    end
+
+                    -- CHECK ATOM MAX LẠI
+                    WorldMobs = Workspace:FindFirstChild("World Mobs")
+                    EventMobs = WorldMobs and WorldMobs:FindFirstChild("Event Mobs")
+                    AtomMax = EventMobs and EventMobs:FindFirstChild("Atom Max")
+
+                    if AtomMax then
+                        continue
+                    end
+
+                    -- INTERACT
+                    local Pad = NextArea:FindFirstChild("DungeonNextAreaPad")
+                    local RE = Pad and Pad:FindFirstChild("RE")
+                    local Interact = RE and RE:FindFirstChild("Interact")
+
+                    if Interact then
+                        Interact:FireServer()
+                    end
+                end
+            end
+        end)
+    end
 })
