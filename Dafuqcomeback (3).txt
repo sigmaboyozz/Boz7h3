@@ -2326,8 +2326,8 @@ Tab7:AddToggle({
 			local Bosses = {
 				"Garriot",
 				"Great Droid",
-				"Atom Max"
-                "Mecha Soldier"
+				"Atom Max" ,
+                "Mecha Soldier" ,
 			}
 
 			while getgenv().AutoStart do
