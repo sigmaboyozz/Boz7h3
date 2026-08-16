@@ -2171,41 +2171,102 @@ Tab7:AddToggle({
     end
 })
 Tab7:AddLabel("Setting Skill")
-local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local Workspace = game:GetService("Workspace")
 
-local Toggle = false
+local LocalPlayer = Players.LocalPlayer
+local AutoNextArea = false
 
 Tab7:AddToggle({
     Name = "Auto Next Area",
     Default = false,
     Callback = function(Value)
-        Toggle = Value
+        AutoNextArea = Value
 
-        if Value then
-            task.spawn(function()
-                while Toggle do
-                    local stage = workspace:FindFirstChild("Dungeon")
-                    if stage then
-                        stage = stage:FindFirstChild("Stages")
-                        if stage then
-                            stage = stage:FindFirstChild("0")
-                            if stage then
-                                local nextArea = stage:FindFirstChild("NextArea")
-                                if nextArea and nextArea:FindFirstChild("Container") then
-                                    local re = nextArea:FindFirstChild("DungeonNextAreaPad")
-                                    if re and re:FindFirstChild("RE") and re.RE:FindFirstChild("Interact") then
-                                        re.RE.Interact:FireServer(true)
-                                    end
-                                end
-                            end
-                        end
-                    end
-                    task.wait(0.1)
-                end
-            end)
+        if not Value then
+            return
         end
+
+        task.spawn(function()
+            while AutoNextArea do
+                task.wait(0.1)
+
+                -- CHECK SERVER PLAYER
+                if #Players:GetPlayers() >= 2 then
+                    TeleportService:Teleport(game.PlaceId, LocalPlayer)
+                    break
+                end
+
+                -- CHECK DUNGEON
+                local Dungeon = Workspace:FindFirstChild("Dungeon")
+                local Stages = Dungeon and Dungeon:FindFirstChild("Stages")
+                local Stage0 = Stages and Stages:FindFirstChild("0")
+                local NextArea = Stage0 and Stage0:FindFirstChild("NextArea")
+                local Container = NextArea and NextArea:FindFirstChild("Container")
+                local Visual = Container and Container:FindFirstChild("Visual")
+
+                if not Visual then
+                    continue
+                end
+
+                -- CHECK ATOM MAX
+                local WorldMobs = Workspace:FindFirstChild("World Mobs")
+                local EventMobs = WorldMobs and WorldMobs:FindFirstChild("Event Mobs")
+                local AtomMax = EventMobs and EventMobs:FindFirstChild("Atom Max")
+
+                if AtomMax then
+                    continue
+                end
+
+                -- TELEPORT
+                local Character = LocalPlayer.Character
+                local HRP = Character and Character:FindFirstChild("HumanoidRootPart")
+
+                if HRP and Visual:IsA("BasePart") then
+                    HRP.CFrame = Visual.CFrame + Vector3.new(0, 3, 0)
+
+                    task.wait(0.8)
+
+                    -- Nếu tắt trong lúc chờ thì dừng luôn
+                    if not AutoNextArea then
+                        break
+                    end
+
+                    -- CHECK PLAYER
+                    if #Players:GetPlayers() >= 2 then
+                        TeleportService:Teleport(game.PlaceId, LocalPlayer)
+                        break
+                    end
+
+                    -- Visual còn tồn tại không?
+                    if not Visual.Parent then
+                        continue
+                    end
+
+                    -- CHECK ATOM MAX LẠI
+                    WorldMobs = Workspace:FindFirstChild("World Mobs")
+                    EventMobs = WorldMobs and WorldMobs:FindFirstChild("Event Mobs")
+                    AtomMax = EventMobs and EventMobs:FindFirstChild("Atom Max")
+
+                    if AtomMax then
+                        continue
+                    end
+
+                    -- INTERACT
+                    local Pad = NextArea:FindFirstChild("DungeonNextAreaPad")
+                    local RE = Pad and Pad:FindFirstChild("RE")
+                    local Interact = RE and RE:FindFirstChild("Interact")
+
+                    if Interact then
+                        Interact:FireServer()
+                    end
+                end
+            end
+        end)
     end
 })
+local RunService = 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local SkillRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("SkillRemote")
