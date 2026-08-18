@@ -73,7 +73,7 @@ local Tab12 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab13 = Window:MakeTab({
-    Name = "farming without a farm 60%",
+    Name = "Auto Standard Wish Token ",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -113,7 +113,7 @@ local Tab20 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab21 = Window:MakeTab({
-    Name = "troll👽",
+    Name = "Auto Delete",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -189,170 +189,6 @@ Tab:AddToggle({
 		end
 	end
 })
-local isRunning = false
-local cycleConnection = nil
-
--- ================== CFRAMES ==================
-local pos1 = CFrame.new(6693.84277, 601.975098, -3246.90747, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-local pos2 = CFrame.new(8388.96289, 658.422302, -3235.83765, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-local pos3 = CFrame.new(7614.31104, 661.975098, -3296.76538, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-
-local player = game.Players.LocalPlayer
-local TweenService = game:GetService("TweenService")
-
-local character = player.Character or player.CharacterAdded:Wait()
-local root = character:WaitForChild("HumanoidRootPart")
-
--- ================== RE-CONNECT KHI CHẾT ==================
-local function setupCharacter()
-    character = player.Character or player.CharacterAdded:Wait()
-    root = character:WaitForChild("HumanoidRootPart")
-end
-
-player.CharacterAdded:Connect(setupCharacter)
-
--- ================== FUNCTIONS ==================
-local function getAllMobs()
-    local mobs = {}
-    local wm = workspace:FindFirstChild("World Mobs")
-    if wm then
-        for _, folder in ipairs({wm:FindFirstChild("Mobs"), wm:FindFirstChild("Boss Mobs")}) do
-            if folder then
-                for _, mob in ipairs(folder:GetChildren()) do
-                    if mob:FindFirstChild("HumanoidRootPart") or mob:FindFirstChild("Head") then
-                        table.insert(mobs, mob)
-                    end
-                end
-            end
-        end
-    end
-    return mobs
-end
-
-local function lockNearestMob()
-    local nearest, minDist = nil, 500
-    for _, mob in ipairs(getAllMobs()) do
-        local mRoot = mob:FindFirstChild("HumanoidRootPart") or mob:FindFirstChild("Head")
-        if mRoot then
-            local dist = (root.Position - mRoot.Position).Magnitude
-            if dist < minDist then
-                minDist = dist
-                nearest = mob
-            end
-        end
-    end
-    if nearest then
-        game:GetService("ReplicatedStorage")
-            :WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("sleitnick_knit@1.4.7")
-            :WaitForChild("knit"):WaitForChild("Services"):WaitForChild("SkillManager")
-            :WaitForChild("RE"):WaitForChild("LockedOnChanged"):FireServer(nearest)
-    end
-end
-
-local function fireSkill()
-    local args = {{
-        Camera = CFrame.new(74.2727279663086, 251.0009002685547, -28.747745513916016, -0.9511321783065796, -0.044049736112356186, 0.3056260347366333, 0, 0.9897724390029907, 0.14265543222427368, -0.308784157037735, 0.13568417727947235, -0.9414043426513672),
-        SkillId = "101",
-        Began = true,
-        CFrame = CFrame.new(70.45240020751953, 247.81771850585938, -16.98019027709961, 1, 0, 0, 0, 1, 0, 0, 0, 1),
-        ["Typ\208\181"] = 1,
-        Aim = Vector3.new(70.45240020751953, 247.81771850585938, -66.98019409179688)
-    }}
-    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("SkillRemote"):FireServer(unpack(args))
-end
-
-local function tweenTo(targetCFrame, speed)
-    if not root or not root.Parent then return end
-    local distance = (root.Position - targetCFrame.Position).Magnitude
-    local tweenInfo = TweenInfo.new(distance / speed, Enum.EasingStyle.Linear)
-    local tween = TweenService:Create(root, tweenInfo, {CFrame = targetCFrame})
-    tween:Play()
-    tween.Completed:Wait()
-end
-
-local function doOneCycle()
-    if not isRunning then return end
-    if not root or not root.Parent then return end
-
-    tweenTo(pos1, 150)   -- Teleport nhanh bằng tween
-    wait(0.3)
-
-    tweenTo(pos2, 120)   -- Di chuyển chậm hơn một chút
-    wait(0.3)
-
-    tweenTo(pos3, 150)
-    wait(0.6)
-end
-
--- ================== TOGGLE ==================
-Tab:AddToggle({
-    Name = "Auto Farm MainWorld Requires 200k power.",
-    Default = false,
-    Callback = function(value)
-        isRunning = value
-
-        if value then  
-            OrionLib:MakeNotification({  
-                Name = "Auto Cycle",  
-                Content = "Đã BẬT - Chu kỳ đang chạy",  
-                Image = "rbxassetid://4483345998",  
-                Time = 3  
-            })  
-            
-            spawn(function()  
-                while isRunning do  
-                    doOneCycle()
-                    wait(14)  
-                end  
-            end)  
-        else  
-            OrionLib:MakeNotification({  
-                Name = "Auto Cycle",  
-                Content = "Đã TẮT",  
-                Image = "rbxassetid://4483345998",  
-                Time = 3  
-            })  
-        end  
-    end
-})
-
--- Auto Lock + Skill Spam
-spawn(function()
-    while true do
-        if isRunning and root and root.Parent then
-            lockNearestMob()
-            fireSkill()
-        end
-        wait(0.12)
-    end
-end)
-
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local hrp = character:WaitForChild("HumanoidRootPart")
-local hum = character:WaitForChild("Humanoid")
-
-local lockPos = hrp.CFrame
-local connection = nil
-local autoSkillConnection = nil
-
--- Skill Remote Args
-local skillArgs = {
-    {
-        Camera = CFrame.new(74.2727279663086, 251.0009002685547, -28.747745513916016, -0.9511321783065796, -0.044049736112356186, 0.3056260347366333, 0, 0.9897724390029907, 0.14265543222427368, -0.308784157037735, 0.13568417727947235, -0.9414043426513672),
-        SkillId = "1",
-        Began = true,
-        CFrame = CFrame.new(70.45240020751953, 247.81771850585938, -16.98019027709961, 1, 0, 0, 0, 1, 0, 0, 0, 1),
-        ["Typ\208\181"] = 1,
-        Aim = Vector3.new(70.45240020751953, 247.81771850585938, -66.98019409179688)
-    }
-}
-
-
 Tab:AddToggle({
     Name = "Duo farm",
     Default = false,
@@ -3491,3 +3327,264 @@ Tab7:AddToggle({
         end)
     end
 })
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local RemoveItemRequest = ReplicatedStorage
+    :WaitForChild("Packages")
+    :WaitForChild("_Index")
+    :WaitForChild("sleitnick_knit@1.4.7")
+    :WaitForChild("knit")
+    :WaitForChild("Services")
+    :WaitForChild("InventoryService")
+    :WaitForChild("RE")
+    :WaitForChild("RemoveItemRequest")
+
+
+local isRunning = false
+local loopThread = nil
+
+local function StartLoop()
+    if isRunning then return end
+    isRunning = true
+
+    loopThread = task.spawn(function()
+        while isRunning do
+            for i = 20, 600 do
+                if not isRunning then break end
+
+                local args = {
+                    [1] = tostring(i),
+                    [2] = "PowerScroll3"
+                }
+
+                pcall(function()
+                    RemoveItemRequest:FireServer(unpack(args))
+                end)
+
+                task.wait(0.1)
+            end
+
+            if isRunning then
+                task.wait(120) -- chờ 2 phút
+            end
+        end
+    end)
+end
+
+local function StopLoop()
+    isRunning = false
+    if loopThread then
+        task.cancel(loopThread)
+        loopThread = nil
+    end
+end
+
+Tab21:AddToggle({
+    Name = "Remove Stats scroll 3",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            StartLoop()
+            OrionLib:MakeNotification({
+                Name = "Status",
+                Content = "Loop đã BẬT",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            StopLoop()
+            OrionLib:MakeNotification({
+                Name = "Status",
+                Content = "Loop đã TẮT",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+OrionLib:MakeNotification({
+    Name = "Loaded",
+    Content = "Script đã sẵn sàng!",
+    Image = "rbxassetid://4483345998",
+    Time = 4
+})
+
+OrionLib:Init()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local RemoveItemRequest = ReplicatedStorage
+    :WaitForChild("Packages")
+    :WaitForChild("_Index")
+    :WaitForChild("sleitnick_knit@1.4.7")
+    :WaitForChild("knit")
+    :WaitForChild("Services")
+    :WaitForChild("InventoryService")
+    :WaitForChild("RE")
+    :WaitForChild("RemoveItemRequest")
+
+
+local isRunning = false
+local loopThread = nil
+
+local function StartLoop()
+    if isRunning then return end
+    isRunning = true
+
+    loopThread = task.spawn(function()
+        while isRunning do
+            for i = 20, 400 do
+                if not isRunning then break end
+
+                local args = {
+                    [1] = tostring(i),
+                    [2] = "AtomMaxWings"
+                }
+
+                pcall(function()
+                    RemoveItemRequest:FireServer(unpack(args))
+                end)
+
+                task.wait(0.1)
+            end
+
+            if isRunning then
+                task.wait(120) -- chờ 2 phút
+            end
+        end
+    end)
+end
+
+local function StopLoop()
+    isRunning = false
+    if loopThread then
+        task.cancel(loopThread)
+        loopThread = nil
+    end
+end
+
+Tab21:AddToggle({
+    Name = "Remove Stats scroll 3",
+    Default = false,
+    Callback = function(Value)
+        if Value then
+            StartLoop()
+            OrionLib:MakeNotification({
+                Name = "Status",
+                Content = "Loop đã BẬT",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        else
+            StopLoop()
+            OrionLib:MakeNotification({
+                Name = "Status",
+                Content = "Loop đã TẮT",
+                Image = "rbxassetid://4483345998",
+                Time = 3
+            })
+        end
+    end
+})
+
+OrionLib:MakeNotification({
+    Name = "Loaded",
+    Content = "Script đã sẵn sàng!",
+    Image = "rbxassetid://4483345998",
+    Time = 4
+})
+
+OrionLib:Init()
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+local DEAD_TIME_REQUIRED = 15
+local CHECK_INTERVAL = 0.5
+local isEnabled = false
+local deadStartTime = nil
+
+-- Kiểm tra còn Event Mobs
+local function hasEventMobs()
+	local worldMobs = workspace:FindFirstChild("World Mobs")
+	if not worldMobs then return false end
+
+	local eventMobs = worldMobs:FindFirstChild("Event Mobs")
+	if not eventMobs then return false end
+
+	for _, mob in ipairs(eventMobs:GetChildren()) do
+		if mob:IsA("Model") or mob:IsA("BasePart") then
+			local hum = mob:FindFirstChildOfClass("Humanoid")
+			if hum then
+				if hum.Health > 0 then return true end
+			else
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Gọi StartDungeon
+local function triggerStartDungeon()
+	pcall(function()
+		local packages = ReplicatedStorage:WaitForChild("Packages")
+		local index = packages:WaitForChild("_Index")
+		local knitPackage = index:WaitForChild("sleitnick_knit@1.4.7")
+		local knit = knitPackage:WaitForChild("knit")
+		local services = knit:WaitForChild("Services")
+		local dungeonService = services:WaitForChild("DungeonLobbyService")
+		local rf = dungeonService:WaitForChild("RF")
+		local startDungeon = rf:WaitForChild("StartDungeon")
+		startDungeon:InvokeServer()
+	end)
+end
+
+-- Character
+player.CharacterAdded:Connect(function(char)
+	character = char
+	humanoid = char:WaitForChild("Humanoid")
+	deadStartTime = nil
+end)
+
+-- Loop
+task.spawn(function()
+	while true do
+		task.wait(CHECK_INTERVAL)
+
+		if not isEnabled then
+			deadStartTime = nil
+			continue
+		end
+
+		if not humanoid or not humanoid.Parent then continue end
+
+		if humanoid.Health <= 0 then
+			if not deadStartTime then
+				deadStartTime = tick()
+			elseif tick() - deadStartTime >= DEAD_TIME_REQUIRED then
+				if hasEventMobs() then
+					triggerStartDungeon()
+					deadStartTime = nil
+					task.wait(3)
+				end
+			end
+		else
+			deadStartTime = nil
+		end
+	end
+end)
+
+-- Chỉ còn 1 nút Toggle
+Tab7:AddToggle({
+	Name = "Auto Replay",
+	Default = false,
+	Callback = function(Value)
+		isEnabled = Value
+	end
+})
+
+OrionLib:Init()
