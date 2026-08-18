@@ -237,14 +237,6 @@ Tab:AddToggle({
     end
 })
 
--- Character Respawn Handler
-player.CharacterAdded:Connect(function(newChar)
-    character = newChar
-    hrp = newChar:WaitForChild("HumanoidRootPart")
-    hum = newChar:WaitForChild("Humanoid")
-end)
-
-OrionLib:Init()
 local TargetRebirth = 0
 local AutoRebirthTarget = false
 
