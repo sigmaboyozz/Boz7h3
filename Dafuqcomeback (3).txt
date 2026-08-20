@@ -31,8 +31,8 @@ local LocalPlayer = Players.LocalPlayer
 -- =========================
 local Whitelist = {
     ["Dalenvertexthe42310"] = true,
-    ["TenNguoi2"] = true,
-    ["Tennguoi1"] = true,
+    ["Xjn_chalyre"] = true,
+    ["mikeyanh3000"] = true,
     ["TenNguoi2"] = true,
     ["Tennguoi1"] = true,
     ["TenNguoi2"] = true,
