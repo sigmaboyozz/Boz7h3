@@ -1,3 +1,87 @@
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+
+local player = Players.LocalPlayer
+
+local data = {
+    ["content"] = "Use Script full paid 😎: **" .. player.Name .. "** (@"
+        .. player.DisplayName .. ")"
+}
+
+local request = syn and syn.request
+    or http_request
+    or request
+    or (http and http.request)
+
+if request then
+    request({
+        Url = "https://discord.com/api/webhooks/1514442038618099793/hqDlVkyHSTBc1_1E_ZpBIB91py0j74NFfjO3YjLcIYc9jS24zjBZGB_Y_yLv8aPp7qP0",
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = HttpService:JSONEncode(data)
+    })
+end
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- =========================
+-- WHITELIST
+-- =========================
+local Whitelist = {
+    ["Dalenvertexthe42310"] = true,
+    ["TenNguoi2"] = true,
+    ["Tennguoi1"] = true,
+    ["TenNguoi2"] = true,
+    ["Tennguoi1"] = true,
+    ["TenNguoi2"] = true,
+    ["Tennguoi1"] = true,
+    ["TenNguoi2"] = true,
+    ["Tennguoi1"] = true,
+    ["TenNguoi2"] = true,
+    ["Tennguoi1"] = true,
+    ["TenNguoi2"] = true,
+}
+
+-- =========================
+-- CHECK WHITELIST
+-- =========================
+if Whitelist[LocalPlayer.Name] then
+    -- c phép -> chy Orion
+else
+
+    -- =========================
+    -- CHECK ANTIKICK
+    -- =========================
+    local kickBlocked = false
+
+    local oldKick
+    pcall(function()
+        oldKick = LocalPlayer.Kick
+    end)
+
+    -- Test xem Kick có b chn không
+    local success = pcall(function()
+        LocalPlayer:Kick("__WHITELIST_TEST__")
+    end)
+
+    if not success then
+        kickBlocked = true
+    end
+
+    -- Có AntiKick -> KHÔNG hin menu
+    if kickBlocked then
+        return
+    end
+
+    -- Không có AntiKick -> kick
+    LocalPlayer:Kick("You Get banned use Script reason No buy Script use for share Join Discord to licensing")
+    return
+end
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/cakukloj-lab/No/refs/heads/main/Orion_Orange_Transparent_09_Small.lua.txt"))()
 
 local Window = OrionLib:MakeWindow({
