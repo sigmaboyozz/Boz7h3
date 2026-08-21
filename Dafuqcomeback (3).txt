@@ -40,7 +40,7 @@ local Whitelist = {
     ["thraggnwk"] = true,
     ["FarmLordBonito"] = true,
     ["rileyaatos"] = true,
-    ["Tennguoi1"] = true,
+    ["IMissHerSoMuch_9001"] = true,
     ["TenNguoi2"] = true,
 }
 
