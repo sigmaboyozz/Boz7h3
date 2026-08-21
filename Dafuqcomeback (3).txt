@@ -37,9 +37,9 @@ local Whitelist = {
     ["FAAAAHBROTHER6"] = true,
     ["FAAAAHBROTHER2"] = true,
     ["FAAAAHBROTHER3"] = true,
-    ["TenNguoi2"] = true,
-    ["Tennguoi1"] = true,
-    ["TenNguoi2"] = true,
+    ["thraggnwk"] = true,
+    ["FarmLordBonito"] = true,
+    ["rileyaatos"] = true,
     ["Tennguoi1"] = true,
     ["TenNguoi2"] = true,
 }
