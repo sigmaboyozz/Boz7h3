@@ -41,7 +41,7 @@ local Whitelist = {
     ["FarmLordBonito"] = true,
     ["rileyaatos"] = true,
     ["IMissHerSoMuch_9001"] = true,
-    ["TenNguoi2"] = true,
+    ["quang0964141977"] = true,
 }
 
 -- =========================
