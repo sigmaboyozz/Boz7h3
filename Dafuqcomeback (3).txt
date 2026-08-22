@@ -42,6 +42,7 @@ local Whitelist = {
     ["rileyaatos"] = true,
     ["IMissHerSoMuch_9001"] = true,
     ["quang0964141977"] = true,
+    ["VINICIUS17739"] = true,
 }
 
 -- =========================
