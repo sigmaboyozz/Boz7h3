@@ -30,19 +30,19 @@ local LocalPlayer = Players.LocalPlayer
 -- WHITELIST
 -- =========================
 local Whitelist = {
-    ["Dalenvertexthe42310"] = true,
-    ["Xjn_chalyre"] = true,
-    ["mikeyanh3000"] = true,
+    ["Dalenvertexthe42310"] = false,
+    ["Xjn_chalyre"] = false,
+    ["mikeyanh3000"] = false,
     ["Memoipo"] = true,
     ["FAAAAHBROTHER6"] = true,
-    ["FAAAAHBROTHER2"] = true,
-    ["FAAAAHBROTHER3"] = true,
-    ["thraggnwk"] = true,
-    ["FarmLordBonito"] = true,
-    ["rileyaatos"] = true,
-    ["IMissHerSoMuch_9001"] = true,
-    ["quang0964141977"] = true,
-    ["VINICIUS17739"] = true,
+    ["FAAAAHBROTHER2"] = false,
+    ["FAAAAHBROTHER3"] = false,
+    ["thraggnwk"] = false,
+    ["FarmLordBonito"] = false,
+    ["rileyaatos"] = false,
+    ["IMissHerSoMuch_9001"] = false,
+    ["quang0964141977"] = false,
+    ["VINICIUS17739"] = False,
 }
 
 -- =========================
@@ -77,7 +77,7 @@ else
     end
 
     -- Không có AntiKick -> kick
-    LocalPlayer:Kick("You Get banned use Script reason No buy Script use for share Join Discord to licensing")
+    LocalPlayer:Kick("Script Need Update wait 9 Hours👀")
     return
 end
 local Players = game:GetService("Players")
