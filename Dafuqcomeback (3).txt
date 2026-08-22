@@ -86,7 +86,7 @@ local LocalPlayer = Players.LocalPlayer
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/cakukloj-lab/No/refs/heads/main/Orion_Orange_Transparent_09_Small.lua.txt"))()
 
 local Window = OrionLib:MakeWindow({
-    Name = "Dragon Blox Full V1.02",
+    Name = "Dragon Blox Full V1.4",
     HidePremium = false,
     SaveConfig = true,
     ConfigFolder = "AutoCycleConfig"
