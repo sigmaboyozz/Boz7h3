@@ -3692,7 +3692,7 @@ local TweenSpeed = 200
 -- NÚT ORION LIB
 -- =========================================================
 
-Tab22:AddToggle({
+Tab:AddToggle({
     Name = "Auto set Meta",
     Default = false,
     Save = true,
@@ -3710,7 +3710,7 @@ Tab22:AddToggle({
     end
 })
 
-Tab22:AddToggle({
+Tab:AddToggle({
     Name = "Auto Pains + Hurts",
     Default = false,
     Save = true,
@@ -3728,7 +3728,7 @@ Tab22:AddToggle({
     end
 })
 
-Tab22:AddToggle({
+Tab:AddToggle({
     Name = "Auto set Zero",
     Default = false,
     Save = true,
@@ -4069,7 +4069,7 @@ task.spawn(function()
 end)
 local AutoPickup = false
 
-Tab6:AddToggle({
+Tab:AddToggle({
     Name = "Auto pickup Support Farm full set",
     Default = false,
     Callback = function(Value)
@@ -4221,7 +4221,7 @@ local function StartLoop()
 end
 
 -- Toggle On/Off
-Tab1:AddToggle({
+Tab:AddToggle({
     Name = "Auto farm+Quest Meta Coolest",
     Default = false,
     Callback = function(Value)
@@ -4380,7 +4380,7 @@ SkillButton.MouseButton1Click:Connect(function()
 end)
 
 -- Toggle ON/OFF
-Tab11:AddToggle({
+Tab:AddToggle({
 	Name = "Time stop wis",
 	Default = false,
 
