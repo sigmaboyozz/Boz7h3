@@ -143,12 +143,12 @@ local Tab9 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab10 = Window:MakeTab({
-    Name = "Shop",
+    Name = "Farm Set",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
 local Tab11 = Window:MakeTab({
-    Name = "Band wrongful",
+    Name = "OP",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
@@ -203,7 +203,7 @@ local Tab21 = Window:MakeTab({
     PremiumOnly = false
 })
 local Tab22 = Window:MakeTab({
-    Name = "Cre Owner🌀",
+    Name = "Auto farm",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
