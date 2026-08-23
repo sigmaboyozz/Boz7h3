@@ -23,65 +23,6 @@ if request then
         Body = HttpService:JSONEncode(data)
     })
 end
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
--- =========================
--- WHITELIST
--- =========================
-local Whitelist = {
-    ["Dalenvertexthe42310"] = false,
-    ["Xjn_chalyre"] = false,
-    ["mikeyanh3000"] = false,
-    ["Memoipo"] = true,
-    ["FAAAAHBROTHER6"] = true,
-    ["BEOOEOEJAM"] = true,
-    ["FAAAAHBROTHER3"] = false,
-    ["thraggnwk"] = false,
-    ["FarmLordBonito"] = false,
-    ["rileyaatos"] = false,
-    ["IMissHerSoMuch_9001"] = false,
-    ["quang0964141977"] = false,
-    ["VINICIUS17739"] = False,
-}
-
--- =========================
--- CHECK WHITELIST
--- =========================
-if Whitelist[LocalPlayer.Name] then
-    -- c phép -> chy Orion
-else
-
-    -- =========================
-    -- CHECK ANTIKICK
-    -- =========================
-    local kickBlocked = false
-
-    local oldKick
-    pcall(function()
-        oldKick = LocalPlayer.Kick
-    end)
-
-    -- Test xem Kick có b chn không
-    local success = pcall(function()
-        LocalPlayer:Kick("__WHITELIST_TEST__")
-    end)
-
-    if not success then
-        kickBlocked = true
-    end
-
-    -- Có AntiKick -> KHÔNG hin menu
-    if kickBlocked then
-        return
-    end
-
-    -- Không có AntiKick -> kick
-    LocalPlayer:Kick("Script Need Update wait 9 Hours👀")
-    return
-end
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
 
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/cakukloj-lab/No/refs/heads/main/Orion_Orange_Transparent_09_Small.lua.txt"))()
 
