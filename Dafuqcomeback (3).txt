@@ -21,15 +21,8 @@ local Tab = Window:MakeTab({
 })
 
 --// =========================================
---// VARIABLES
---// =========================================
-
-local FurEnabled = false
-local DragonEnabled = false
-local PlaceScriptEnabled = false
-
---// =========================================
 --// FUR INFECTION
+--// KHÔNG LƯU
 --// =========================================
 
 Tab:AddToggle({
@@ -38,7 +31,6 @@ Tab:AddToggle({
     Save = false,
     Flag = "FurInfection",
     Callback = function(Value)
-        FurEnabled = Value
 
         if Value then
             task.spawn(function()
@@ -53,11 +45,13 @@ Tab:AddToggle({
                 end
             end)
         end
+
     end
 })
 
 --// =========================================
 --// DRAGONBLOX
+--// KHÔNG LƯU
 --// =========================================
 
 Tab:AddToggle({
@@ -66,12 +60,13 @@ Tab:AddToggle({
     Save = false,
     Flag = "DragonBlox",
     Callback = function(Value)
-        DragonEnabled = Value
 
         if Value then
             task.spawn(function()
                 local success, err = pcall(function()
-                    loadstring(game:HttpGet("https://raw.githubusercontent.com/sigmaboyozz/Kophaibigmon/refs/heads/main/Dafuqcomeback%20%283%29%20%2810%29.txt"))()
+                    loadstring(game:HttpGet(
+                        "https://raw.githubusercontent.com/sigmaboyozz/Kophaibigmon/refs/heads/main/Dafuqcomeback%20%283%29%20%2810%29.txt"
+                    ))()
                 end)
 
                 if not success then
@@ -79,11 +74,13 @@ Tab:AddToggle({
                 end
             end)
         end
+
     end
 })
 
 --// =========================================
---// PLACE SCRIPT
+--// DRAGON BLOX [NEW]
+--// CÓ AUTO SAVE
 --// =========================================
 
 Tab:AddToggle({
@@ -91,8 +88,8 @@ Tab:AddToggle({
     Default = false,
     Save = true,
     Flag = "AutoScript",
+
     Callback = function(Value)
-        PlaceScriptEnabled = Value
 
         if not Value then
             return
@@ -118,7 +115,6 @@ Tab:AddToggle({
 
             end
 
-
             -- =========================================
             -- PLACE ID 116454396851335
             -- =========================================
@@ -136,7 +132,6 @@ Tab:AddToggle({
                 end
 
             end
-
 
             -- =========================================
             -- PLACE ID 3177438863
@@ -186,7 +181,7 @@ Tab:AddToggle({
 
 Tab:AddParagraph(
     "AutoSave",
-    "Các Toggle được Orion tự động lưu vào Config."
+    "Chỉ Dragon Blox [New ♦️] được Orion tự động lưu."
 )
 
 OrionLib:Init()
