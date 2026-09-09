@@ -32,10 +32,10 @@ local PlaceScriptEnabled = false
 --// FUR INFECTION
 --// =========================================
 
-Tab:AddToggle({
+Tab:AddButton({
     Name = "Fur Infection",
     Default = false,
-    Save = true,
+    Save = false,
     Flag = "FurInfection",
     Callback = function(Value)
         FurEnabled = Value
@@ -63,7 +63,7 @@ Tab:AddToggle({
 Tab:AddToggle({
     Name = "DragonBlox",
     Default = false,
-    Save = true,
+    Save = false,
     Flag = "DragonBlox",
     Callback = function(Value)
         DragonEnabled = Value
@@ -71,9 +71,7 @@ Tab:AddToggle({
         if Value then
             task.spawn(function()
                 local success, err = pcall(function()
-                    loadstring(game:HttpGet(
-                        "https://raw.githubusercontent.com/thinhcuto511/DragonbloxV4cuathinh/refs/heads/main/note-obfuscated%20(1).lua"
-                    ))()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/sigmaboyozz/Kophaibigmon/refs/heads/main/Dafuqcomeback%20%283%29%20%2810%29.txt"))()
                 end)
 
                 if not success then
