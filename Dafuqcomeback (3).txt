@@ -32,7 +32,7 @@ local PlaceScriptEnabled = false
 --// FUR INFECTION
 --// =========================================
 
-Tab:AddButton({
+Tab:AddToggle({
     Name = "Fur Infection",
     Default = false,
     Save = false,
