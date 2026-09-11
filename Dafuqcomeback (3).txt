@@ -48,5 +48,46 @@ Tab:AddToggle({
 
     end
 })
+local Section = Tab:AddSection({
+    Name = "Big update part 1⏳"
+})
+local Label = Tab:AddLabel("Đang tính...")
 
-                                           
+task.spawn(function()
+    while task.wait(1) do
+        local now = os.date("*t")
+
+        -- Thứ trong Lua: Chủ Nhật = 1, Thứ 2 = 2
+        local daysUntil = (2 - now.wday) % 7
+
+        -- Nếu hôm nay là thứ 2 thì đếm tới thứ 2 tuần sau
+        if daysUntil == 0 then
+            daysUntil = 7
+        end
+
+        local target = os.time({
+            year = now.year,
+            month = now.month,
+            day = now.day + daysUntil,
+            hour = 0,
+            min = 0,
+            sec = 0
+        })
+
+        local remaining = target - os.time()
+
+        local days = math.floor(remaining / 86400)
+        local hours = math.floor((remaining % 86400) / 3600)
+        local minutes = math.floor((remaining % 3600) / 60)
+        local seconds = remaining % 60
+
+        Label:Set(
+            string.format(
+                "⏳ Còn %dd %02dh %02dm %02ds tới thứ 2",
+                days, hours, minutes, seconds
+            )
+        )
+    end
+end)
+
+OrionLib:Init()
