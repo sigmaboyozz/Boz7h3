@@ -49,7 +49,7 @@ Tab:AddToggle({
     end
 })
 local Section = Tab:AddSection({
-    Name = "Big update part 1⏳"
+    Name = "sorry script delay dragon blox part 1⏳"
 })
 local Label = Tab:AddLabel("Đang tính...")
 
@@ -58,7 +58,7 @@ task.spawn(function()
         local now = os.date("*t")
 
         -- Thứ trong Lua: Chủ Nhật = 1, Thứ 2 = 2
-        local daysUntil = (2 - now.wday) % 7
+        local daysUntil = (8 - now.wday) % 7
 
         -- Nếu hôm nay là thứ 2 thì đếm tới thứ 2 tuần sau
         if daysUntil == 0 then
