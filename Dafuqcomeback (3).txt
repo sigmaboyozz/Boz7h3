@@ -49,7 +49,7 @@ Tab:AddToggle({
     end
 })
 local Section = Tab:AddSection({
-    Name = "sorry script delay dragon blox part 1⏳"
+    Name = "Big update part 2 soon.."
 })
 local Label = Tab:AddLabel("Đang tính...")
 
@@ -89,5 +89,13 @@ task.spawn(function()
         )
     end
 end)
+
+OrionLib:Init()
+Tab:AddButton({
+    Name = "Dragon blox [free]",
+    Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/bohehebo9-bit/Plsnodeobfvegetaandgokuking/refs/heads/main/obf_0aV2Cp57c03O0e5Un1zfdSbJ9oP4nhDr3o7Y2x3U9B0L9dAVYaR8lfTG8701QYrO.lua"))()
+    end
+})
 
 OrionLib:Init()
