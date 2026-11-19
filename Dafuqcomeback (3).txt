@@ -49,7 +49,7 @@ Tab:AddToggle({
     end
 })
 local Section = Tab:AddSection({
-    Name = "Big update part 2 soon.."
+    Name = "update part 3 soon.."
 })
 local Label = Tab:AddLabel("Đang tính...")
 
@@ -92,9 +92,9 @@ end)
 
 OrionLib:Init()
 Tab:AddButton({
-    Name = "Dragon blox [free]",
+    Name = "Dragon blox [New!]",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/bohehebo9-bit/Plsnodeobfvegetaandgokuking/refs/heads/main/obf_0aV2Cp57c03O0e5Un1zfdSbJ9oP4nhDr3o7Y2x3U9B0L9dAVYaR8lfTG8701QYrO.lua"))()
+        loadstring(game:HttpGet("https://cdn.luaprotect.dev/u/aea842/Nr0CsS53ip2OxpjG"))()
     end
 })
 
