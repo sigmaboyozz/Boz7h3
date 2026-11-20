@@ -26,7 +26,7 @@ local Tab = Window:MakeTab({
 --// =========================================
 
 Tab:AddToggle({
-    Name = "Fur Infection outbreak",
+    Name = "Fur Infection outbreak[New Update!]",
     Default = false,
     Save = false,
     Flag = "FurInfection",
@@ -35,9 +35,7 @@ Tab:AddToggle({
         if Value then
             task.spawn(function()
                 local success, err = pcall(function()
-                    loadstring(game:HttpGet(
-                        "https://raw.githubusercontent.com/Dreamer987/Furryinfectionmetalbel/refs/heads/main/Furinfec"
-                    ))()
+                    loadstring(game:HttpGet("https://cdn.luaprotect.dev/u/aea842/az4Lx5gbInqG0uFl"))()
                 end)
 
                 if not success then
